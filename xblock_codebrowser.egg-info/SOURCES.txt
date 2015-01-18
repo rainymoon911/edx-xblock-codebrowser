@@ -1,7 +1,0 @@
-codebrowser.py
-xblock_codebrowser.egg-info/PKG-INFO
-xblock_codebrowser.egg-info/SOURCES.txt
-xblock_codebrowser.egg-info/dependency_links.txt
-xblock_codebrowser.egg-info/entry_points.txt
-xblock_codebrowser.egg-info/requires.txt
-xblock_codebrowser.egg-info/top_level.txt
