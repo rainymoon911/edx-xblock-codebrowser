@@ -29,7 +29,6 @@ then
     cp -r $root/ucore_plus $base_dir/ucore/$id/
 
     cd $base_dir/ucore/$id/ucore_plus
-    eval `ssh-agent -s`
     ssh-add $key_file
 
     git remote remove origin$id
