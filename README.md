@@ -1,12 +1,13 @@
-======
 introduction
+======
 
 it is a xblock for codebrowser(woboq) and the code is on gitlab
 
 the python code is just a UI(standard xblock) and the kern code is in xblock-script
 
-======
+
 function of scripts
+======
 
 create.sh               run on gitlab server,called by exp file
 
@@ -19,6 +20,7 @@ project
 generator.sh            pull code from gitlab, generate the compile commands(in json format),adn generate the html file
 for browsing code
 
-======
+
 preparation
+======
 
