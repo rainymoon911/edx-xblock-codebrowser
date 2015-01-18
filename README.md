@@ -9,7 +9,7 @@ the python code is just a UI(standard xblock) and the kern code is in xblock-scr
 function of scripts
 ======
 
-create.sh :               run on gitlab server,called by exp file
+create.sh :               run on gitlab server,called by exp file and call gitlab cli to initialize user account
 
 initialize_user.sh :      generate the ssh key(private and public),call the initialize.exp to initialize gitlab 
 account,upload the project and write gitlab config file(switch users)
