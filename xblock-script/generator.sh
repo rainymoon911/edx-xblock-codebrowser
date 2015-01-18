@@ -8,6 +8,7 @@ woboq_base=$base/woboq_codebrowser
 code_base=$base/staticfiles/ucore
 output_dir=$out_base/$id
 data_dir=$out_base/"data"
+key_file=/var/www/.ssh/id_rsa_$id
 
 username=$(echo $email | sed "s/\(\)@.*/\1/")
 
@@ -18,6 +19,7 @@ cd $code_base/$id/ucore_plus
 cp $woboq_base/scripts/fake_compiler.sh ../
 sed -i "s/\$COMPILATION_COMMANDS/\/edx\/var\/edxapp\/staticfiles\/ucore\/$id\/compile_commands.json/g" ../fake_compiler.sh
 
+ssh-add $key_file
 git remote add origin$id git@$id:$username/ucore.git
 git pull origin$id master
 
