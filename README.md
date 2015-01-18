@@ -100,6 +100,12 @@ now you can log in the gitlab server without password:
     
     ssh root@ip
 
+install woboq codebrowser 
+======
+
+[woboq project on github](https://github.com/woboq/woboq_codebrowser/)
+
+modify the args in scripts and other files to suit your project
 
     
     
