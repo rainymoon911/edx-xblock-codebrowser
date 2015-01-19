@@ -124,7 +124,7 @@ create file(to ensure www-data can run the script and generate file,switch user 
     
     cd /var/www/.ssh
     
-    touch config(the git config file which used to switch users of gitlab)
+    touch config(the git config file which used to switch users of gitlab and use the proper private key)
 
 install woboq codebrowser 
 ======
