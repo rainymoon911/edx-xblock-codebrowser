@@ -75,6 +75,8 @@ create no-password ssh connect between edx server and gitlab server(make exp fil
 (don't forget to switch user to www-data which edx use)
 
 in edx server,generate ssh key and move pub key to gitlab server
+
+    cd /var/www/.ssh
     
     ssh-keygen -b 1024 -t rsa
     
@@ -82,9 +84,10 @@ in edx server,generate ssh key and move pub key to gitlab server
     
     ssh-add id_rsa
     
-if ssh agent haven't start,add the command to .bashrc or .profile to start ssh-agent when user log in
+if ssh agent haven't start,add the command to .bash_profile to start ssh-agent when user log in
 
     eval `ssh-agent -s`
+    ssh-add
     
     
 log in gitlab server
