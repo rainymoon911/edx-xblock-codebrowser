@@ -107,6 +107,8 @@ now you can log in the gitlab server without password:
     
     ssh root@ip
     
+(ps: if it is the first time ,there will be a notification, my exp file doesn't consider it,so confirm you have logged at least one time)
+    
 step 4
 create file(to ensure www-data can run the script and generate file,switch user to www-data)
 
