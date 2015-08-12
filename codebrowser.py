@@ -77,7 +77,7 @@ class CodeBrowserBlock(XBlock):
 		    logger.DEBUG("Error in codebrowser(get private key)" + username)
                     return self.message_view("Error in codebrowser (get private key,please make sure you have git account)", ex, context)
 	
-	os.system("/edx/var/edxapp/staticfiles/xblock-script/generator.sh "  + student_id + " " + email + " " + username)
+	
         
 	# Load the HTML fragment from within the package and fill in the template
         html_str = pkg_resources.resource_string(__name__, "static/html/codebrowser_view.html")
@@ -114,6 +114,19 @@ class CodeBrowserBlock(XBlock):
 
         return frag
 
+    @XBlock.json_handler
+    def generate(self, data, suffix=""):
+      	"""
+        generate static file for codebrowse
+        """
+    	student_id = self.runtime.anonymous_student_id
+	real_user = self.runtime.get_real_user(self.runtime.anonymous_student_id)
+	username = real_user.username
+	lab = data["lab"]
+    	os.system("/edx/var/edxapp/staticfiles/xblock-script/generator.sh "  + student_id + " " + username + " " + lab)
+    	
+    	return {"result": True}
+    	
     @XBlock.json_handler
     def studio_submit(self, data, suffix=''):
         """
