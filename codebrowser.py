@@ -5,7 +5,6 @@ from xblock.fields import Scope, Integer, String
 from xblock.fragment import Fragment
 
 import os
-import logging.handlers
 import pymongo
 
 class CodeBrowserBlock(XBlock):
@@ -28,16 +27,6 @@ class CodeBrowserBlock(XBlock):
 	email = real_user.email
 	username = real_user.username
 
-	LOG_FILE = '/var/www/gitlab_codebrowser.log'
-    	handler = logging.handlers.RotatingFileHandler(LOG_FILE, maxBytes = 1024*1024)
-    	fmt = '%(asctime)s - %(filename)s:%(lineno)s - %(name)s - %(message)s'
-    	formatter = logging.Formatter(fmt)
-    	handler.setFormatter(formatter)
-
-    	logger = logging.getLogger('gitlab_codebrowser')
-    	logger.addHandler(handler)
-    	logger.setLevel(logging.DEBUG)
-
 	"""
         save the private key and create cofig file
         """
@@ -55,7 +44,7 @@ class CodeBrowserBlock(XBlock):
                     token=db.token
 		    result = token.find_one({"username":username})
 		    private_key = result["private_key"]
-		    self.logger.info("codebrowser: username" + username + "private key" + private_key)
+		    logger.info("codebrowser: username" + username)
 		    conn.disconnect()
 		    #write config file and private key
 		    ip　=　”192.168.1.62“
@@ -74,7 +63,7 @@ class CodeBrowserBlock(XBlock):
 		    os.system("mkdir -p " + dir +  " && cd " + dir + " && git init")
 
 		except Exception, ex:
-		    logger.info("Error in codebrowser(get private key)" + username)
+		    logger.info("Error in codebrowser(get private key)" + username + ex)
                     #return self.message_view("Error in codebrowser (get private key,please make sure you have git account)", ex, context)
 	
 	
