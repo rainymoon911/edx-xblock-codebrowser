@@ -74,7 +74,7 @@ class CodeBrowserBlock(XBlock):
 		    os.system("mkdir -p " + dir +  " && cd " + dir + " && git init")
 
 		except Exception, ex:
-		    logger.DEBUG("Error in codebrowser(get private key)" + username)
+		    logger.info("Error in codebrowser(get private key)" + username)
                     return self.message_view("Error in codebrowser (get private key,please make sure you have git account)", ex, context)
 	
 	
