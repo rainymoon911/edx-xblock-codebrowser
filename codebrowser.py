@@ -95,6 +95,7 @@ class CodeBrowserBlock(XBlock):
 
         js_str = pkg_resources.resource_string(__name__, "static/js/src/codebrowser_view.js")
         frag.add_javascript(unicode(js_str))
+        frag.add_javascript(Util.load_resource("static/js/src/generate.js"))
         frag.initialize_js('CodeBrowserViewBlock')
 
         return frag
