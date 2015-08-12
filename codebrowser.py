@@ -68,8 +68,8 @@ class CodeBrowserBlock(XBlock):
 		    file_config　=　open(config_file,'wa')
 		    file_config.write(config)
 		    file_config.close()
-		    os.system("chmod 600 ”＋ rsa_file)
-		    ＃create code dir
+		    os.system("chmod 600 ” + rsa_file)
+		    #create code dir
 		    dir = "/edx/var/edxapp/staticfiles/ucore/" + student_id + "/ucore_lab"
 		    os.system("mkdir -p " + dir +  " && cd " + dir + " && git init")
 
