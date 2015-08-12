@@ -86,7 +86,7 @@ class CodeBrowserBlock(XBlock):
         frag.add_javascript(unicode(js_str))
         js_str = pkg_resources.resource_string(__name__, "static/js/src/generate.js")
         frag.add_javascript(unicode(js_str))
-        frag.initialize_js('CodeBrowserViewBlock')
+        frag.initialize_js('CodeBrowserBlock')
 
         return frag
 
@@ -100,7 +100,7 @@ class CodeBrowserBlock(XBlock):
 
         js_str = pkg_resources.resource_string(__name__, "static/js/src/codebrowser_edit.js")
         frag.add_javascript(unicode(js_str))
-        frag.initialize_js('CodeBrowserEditBlock')
+        frag.initialize_js('CodeBrowserBlock')
 
         return frag
 
@@ -126,13 +126,4 @@ class CodeBrowserBlock(XBlock):
         self.height = data.get('height')
         return {'result': 'success'}
 
-    @staticmethod
-    def workbench_scenarios():
-        """A canned scenario for display in the workbench."""
-        return [
-            ("Code Browser",
-            """
-            <vertical_demo>
-            </vertical_demo>
-            """)
-        ]
+
