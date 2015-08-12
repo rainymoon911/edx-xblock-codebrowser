@@ -75,7 +75,7 @@ class CodeBrowserBlock(XBlock):
 
 		except Exception, ex:
 		    logger.info("Error in codebrowser(get private key)" + username)
-                    return self.message_view("Error in codebrowser (get private key,please make sure you have git account)", ex, context)
+                    #return self.message_view("Error in codebrowser (get private key,please make sure you have git account)", ex, context)
 	
 	
         
@@ -95,7 +95,8 @@ class CodeBrowserBlock(XBlock):
 
         js_str = pkg_resources.resource_string(__name__, "static/js/src/codebrowser_view.js")
         frag.add_javascript(unicode(js_str))
-        frag.add_javascript(Util.load_resource("static/js/src/generate.js"))
+        js_str = pkg_resources.resource_string(__name__, "static/js/src/generate.js")
+        frag.add_javascript(unicode(js_str))
         frag.initialize_js('CodeBrowserViewBlock')
 
         return frag
