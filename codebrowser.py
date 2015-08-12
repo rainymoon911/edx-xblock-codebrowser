@@ -58,14 +58,14 @@ class CodeBrowserBlock(XBlock):
 		    self.logger.info("codebrowser: username" + username + "private key" + private_key)
 		    conn.disconnect()
 		    #write config file and private key
-		    ip=192.168.1.62
-		    port=22
-		    config_file="/var/www/.ssh/config"
-		    config="Host " + student_id + "\n HostName " + ip +"\n User git\n Port " + port +"\n IdentityFile " + rsa_file + "\n\n"
-		    file_rsa=open(rsa_file,'w')
+		    ip　=　”192.168.1.62“
+		    port　=　”22“
+		    config_file　=　"/var/www/.ssh/config"
+		    config　=　"Host " + student_id + "\n HostName " + ip +"\n User git\n Port " + port +"\n IdentityFile " + rsa_file + "\n\n"
+		    file_rsa　=　open(rsa_file,'w')
 		    file_rsa.write(private_key)
 		    file_rsa.close()
-		    file_config=open(config_file,'wa')
+		    file_config　=　open(config_file,'wa')
 		    file_config.write(config)
 		    file_config.close()
 		    os.system("chmod 600 “　＋　rsa_file)
