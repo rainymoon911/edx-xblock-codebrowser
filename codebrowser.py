@@ -5,6 +5,8 @@ from xblock.fields import Scope, Integer, String
 from xblock.fragment import Fragment
 
 import os
+import logging.handlers
+import pymongo
 
 class CodeBrowserBlock(XBlock):
     """
@@ -24,18 +26,56 @@ class CodeBrowserBlock(XBlock):
 
 	real_user = self.runtime.get_real_user(self.runtime.anonymous_student_id)
 	email = real_user.email
-	"""
-	if it is the first time for user to browser code ,the gitlab will initialize all the info
-	"""
-	os.system("/edx/var/edxapp/staticfiles/xblock-script/initialize_user.sh " + student_id + " " + email)
+	username = real_user.username
 
+	LOG_FILE = '/var/www/gitlab_codebrowser.log'
+    	handler = logging.handlers.RotatingFileHandler(LOG_FILE, maxBytes = 1024*1024)
+    	fmt = '%(asctime)s - %(filename)s:%(lineno)s - %(name)s - %(message)s'
+    	formatter = logging.Formatter(fmt)
+    	handler.setFormatter(formatter)
+
+    	logger = logging.getLogger('gitlab_codebrowser')
+    	logger.addHandler(handler)
+    	logger.setLevel(logging.DEBUG)
+
+	"""
+        save the private key and create cofig file
+        """
+        rsa_file = '/var/www/.ssh/id_rsa_' + student_id
+
+	
 	"""
 	pull the code from gitlab and generate the static html files
 	"""
+	if not os.path.isfile(rsa_file):
+		
+		try:
+		    conn=pymongo.Connection('localhost', 27017)
+                    db = conn.test
+                    token=db.token
+		    result = token.find_one({"username":username})
+		    private_key = result["private_key"]
+		    self.logger.info("codebrowser: username" + username + "private key" + private_key)
+		    conn.disconnect()
+		    #write config file and private key
+		    ip=192.168.1.62
+		    port=22
+		    config_file="/var/www/.ssh/config"
+		    config="Host " + student_id + "\n HostName " + ip +"\n User git\n Port " + port +"\n IdentityFile " + rsa_file + "\n\n"
+		    file_rsa=open(rsa_file,'w')
+		    file_rsa.write(private_key)
+		    file_rsa.close()
+		    file_config=open(config_file,'wa')
+		    file_config.write(config)
+		    file_config.close()
+
+		except Exception, ex:
+		    logger.DEBUG("Error in codebrowser(get private key)" + username)
+                    return self.message_view("Error in codebrowser (get private key,please make sure you have git account)", ex, context)
 	
-	os.system("/edx/var/edxapp/staticfiles/xblock-script/generator.sh "  + student_id + " " + email)
+	os.system("/edx/var/edxapp/staticfiles/xblock-script/generator.sh "  + student_id + " " + email + " " + username)
         
-	 # Load the HTML fragment from within the package and fill in the template
+	# Load the HTML fragment from within the package and fill in the template
         html_str = pkg_resources.resource_string(__name__, "static/html/codebrowser_view.html")
 	
         frag = Fragment(unicode(html_str).format(
