@@ -12,8 +12,6 @@ class CodeBrowserBlock(XBlock):
     """
     An XBlock providing CodeBrowser capabilities for video
     """
-
-    src = String(help="the directory of your code", default=None, scope=Scope.content)
     width = Integer(help="width of the frame", default=800, scope=Scope.content)
     height = Integer(help="height of the frame", default=900, scope=Scope.content)
     lab = String(help="Student Lab",default="no_lab", scope=Scope.user_state)
@@ -58,9 +56,9 @@ class CodeBrowserBlock(XBlock):
         """
         rsa_file = '/var/www/.ssh/id_rsa_' + student_id
         if self.lab == "no_lab":
-            self.src = 'http://166.111.68.45:11133/static/codebrowser/notice.html'
+            src = 'http://166.111.68.45:11133/static/codebrowser/notice.html'
 	else:
-	    self.src = 'http://166.111.68.45:11133/static/codebrowser/' + student_id + '/ucore_lab/' + self.lab + '/index.html'
+	    src = 'http://166.111.68.45:11133/static/codebrowser/' + student_id + '/ucore_lab/' + self.lab + '/index.html'
 	
 	"""
 	pull the code from gitlab and generate the static html files
@@ -103,7 +101,7 @@ class CodeBrowserBlock(XBlock):
         frag = Fragment(unicode(html_str).format(
 		width=self.width, 
 		height=self.height,
-		src=self.src,
+		src=src,
 	))
         # Load CSS
         css_str = pkg_resources.resource_string(__name__, "static/css/codebrowser.css")
