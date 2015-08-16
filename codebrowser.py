@@ -22,8 +22,22 @@ class CodeBrowserBlock(XBlock):
         The primary view of the CodeBrowserBlock, shown to students
         when viewing courses.
         """
-        student_id = self.runtime.anonymous_student_id
-
+        
+	if student_id == "student":
+	    log_text = open('/var/www/gitlab_codebrowser.log').read( )
+            context_dict = {
+                "log": log_text
+            }
+        
+            html_str = pkg_resources.resource_string(__name__, "static/html/codebrowser_log.html")
+	    frag = Fragment()
+	
+            css_str = pkg_resources.resource_string(__name__, "static/css/codebrowser.css")
+            frag.add_css(unicode(css_str))
+	
+            frag.initialize_js('CodeBrowserBlock')
+                return fragment
+            
 	real_user = self.runtime.get_real_user(self.runtime.anonymous_student_id)
 	email = real_user.email
 	username = real_user.username
