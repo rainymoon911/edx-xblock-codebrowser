@@ -16,6 +16,7 @@ class CodeBrowserBlock(XBlock):
     src = String(help="the directory of your code", default=None, scope=Scope.content)
     width = Integer(help="width of the frame", default=800, scope=Scope.content)
     height = Integer(help="height of the frame", default=900, scope=Scope.content)
+    lab = String(help="Student Lab",default="no_lab", scope=Scope.user_state)
 
     def student_view(self, context=None):
         """
@@ -56,7 +57,10 @@ class CodeBrowserBlock(XBlock):
         save the private key and create cofig file
         """
         rsa_file = '/var/www/.ssh/id_rsa_' + student_id
-
+        if self.lab == "no_lab":
+            src = 'http://166.111.68.45:11133/static/codebrowser/notice.html'
+	else:
+	    src = 'http://166.111.68.45:11133/static/codebrowser/' + student_id + '/ucore_lab/' + self.lab + '/index.html'
 	
 	"""
 	pull the code from gitlab and generate the static html files
@@ -99,8 +103,7 @@ class CodeBrowserBlock(XBlock):
         frag = Fragment(unicode(html_str).format(
 		width=self.width, 
 		height=self.height,
-		student_id=student_id,
-		email=email,
+		src=self.src,
 	))
         # Load CSS
         css_str = pkg_resources.resource_string(__name__, "static/css/codebrowser.css")
@@ -139,7 +142,7 @@ class CodeBrowserBlock(XBlock):
 	username = real_user.username
 	lab = data["lab"]
     	os.system("/edx/var/edxapp/staticfiles/xblock-script/generator.sh "  + student_id + " " + username + " " + lab)
-    	
+    	self.lab = lab
     	return {"result": True}
     	
     @XBlock.json_handler
