@@ -135,13 +135,33 @@ class CodeBrowserBlock(XBlock):
         generate static file for codebrowse
         """
     	student_id = self.runtime.anonymous_student_id
-	real_user = self.runtime.get_real_user(self.runtime.anonymous_student_id)
+	real_user = self.runtime.get_real_user(student_id)
 	username = real_user.username
 	lab = data["lab"]
 	self.logger.info("generate " + username + " " + lab)
     	os.system("/edx/var/edxapp/staticfiles/xblock-script/generator.sh "  + student_id + " " + username + " " + lab)
     	self.lab = lab
     	return {"result": True}
+    	
+    @XBlock.json_handler
+    def edit(self, data, suffix=""):
+      	"""
+        edit file user are viewing
+        """
+    	url = "http://166.111.68.45:11133/courses/BIT/CS101/2014T1/courseware/0b64b532c9f44b2c9c23a87a2b1f8104/1f82578bbac4456fbbb84f718712054a/"
+	src = data["src"]
+	self.logger.info("edit " + username + " " + src)
+    	
+    	student_id = self.runtime.anonymous_student_id
+	real_user = self.runtime.get_real_user(student_id)
+	username = real_user.username
+    	conn = pymongo.Connection('localhost', 27017)
+        db = conn.test
+        user = db.user
+        user.insert({"username":user_name, "view_file":src})
+        conn.disconnect()
+        
+    	return HttpResponseRedirect(url)
     	
     @XBlock.json_handler
     def studio_submit(self, data, suffix=''):
