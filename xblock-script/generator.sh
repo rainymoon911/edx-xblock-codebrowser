@@ -10,7 +10,6 @@ woboq_base=$base/woboq_codebrowser
 code_base=$base/staticfiles/ucore
 output_dir=$out_base/$id/ucore_lab
 data_dir=$out_base/"data"
-log_file=/var/www/error.log
 
 COMPILATION_COMMANDS=$code_base/$id/compile_commands.json
 
