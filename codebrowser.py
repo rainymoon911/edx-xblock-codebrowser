@@ -15,6 +15,16 @@ class CodeBrowserBlock(XBlock):
     width = Integer(help="width of the frame", default=800, scope=Scope.content)
     height = Integer(help="height of the frame", default=900, scope=Scope.content)
     lab = String(help="Student Lab",default="no_lab", scope=Scope.user_state)
+    
+    LOG_FILE = '/var/www/gitlab_codebrowser.log'
+    handler = logging.handlers.RotatingFileHandler(LOG_FILE, maxBytes = 1024*1024)
+    fmt = '%(asctime)s - %(filename)s:%(lineno)s - %(name)s - %(message)s'
+    formatter = logging.Formatter(fmt)
+    handler.setFormatter(formatter)
+
+    logger = logging.getLogger('gitlab_codebrowser')
+    logger.addHandler(handler)
+    logger.setLevel(logging.DEBUG)
 
     def student_view(self, context=None):
         """
@@ -40,17 +50,6 @@ class CodeBrowserBlock(XBlock):
 	email = real_user.email
 	username = real_user.username
 
-
-	LOG_FILE = '/var/www/gitlab_codebrowser.log'
-        handler = logging.handlers.RotatingFileHandler(LOG_FILE, maxBytes = 1024*1024)
-        fmt = '%(asctime)s - %(filename)s:%(lineno)s - %(name)s - %(message)s'
-        formatter = logging.Formatter(fmt)
-        handler.setFormatter(formatter)
-
-        logger = logging.getLogger('gitlab_codebrowser')
-        logger.addHandler(handler)
-        logger.setLevel(logging.DEBUG)
-
 	"""
         save the private key and create cofig file
         """
@@ -71,7 +70,7 @@ class CodeBrowserBlock(XBlock):
                     token=db.token
 		    result = token.find_one({"username":username})
 		    private_key = result["private_key"]
-		    logger.info("codebrowser: username" + username)
+		    self.logger.info("codebrowser: username" + username)
 		    conn.disconnect()
 		    #write config file and private key
 		    ip　=　”192.168.1.62“
@@ -90,10 +89,10 @@ class CodeBrowserBlock(XBlock):
 		    os.system("mkdir -p " + dir +  " && cd " + dir + " && git init")
 
 		except Exception, ex:
-		    logger.info("Error in codebrowser(get private key)" + username + ex)
+		    self.logger.info("Error in codebrowser(get private key)" + username + ex)
                     #return self.message_view("Error in codebrowser (get private key,please make sure you have git account)", ex, context)
 	
-	
+	self.logger.info(username + " access " + src)
         
 	# Load the HTML fragment from within the package and fill in the template
         html_str = pkg_resources.resource_string(__name__, "static/html/codebrowser_view.html")
@@ -110,7 +109,7 @@ class CodeBrowserBlock(XBlock):
 
         js_str = pkg_resources.resource_string(__name__, "static/js/src/codebrowser_view.js")
         frag.add_javascript(unicode(js_str))
-        js_str = pkg_resources.resource_string(__name__, "static/js/src/generate.js")
+        js_str = pkg_resources.resource_string(__name__, "static/js/src/fullscreen.js")
         frag.add_javascript(unicode(js_str))
         frag.initialize_js('CodeBrowserBlock')
 
@@ -139,6 +138,7 @@ class CodeBrowserBlock(XBlock):
 	real_user = self.runtime.get_real_user(self.runtime.anonymous_student_id)
 	username = real_user.username
 	lab = data["lab"]
+	self.logger.info("generate " + username + " " + lab)
     	os.system("/edx/var/edxapp/staticfiles/xblock-script/generator.sh "  + student_id + " " + username + " " + lab)
     	self.lab = lab
     	return {"result": True}
