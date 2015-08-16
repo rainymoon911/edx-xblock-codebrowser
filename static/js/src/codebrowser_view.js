@@ -1,23 +1,20 @@
-function CodeBrowserEditBlock(runtime, element) {
-  var generateHandlerUrl = runtime.handlerUrl(element, 'generate');
-  function jsCallback(response) {
-        if (response.result == true) {
-            window.location.reload(true);
-        } else {
-            $('.error-message', element).html('Error: ' + response.message);
-        }
-    }
-    
-  $('#generate_btn', element).click(function(eventObject) {
-        params = {
-            "lab": $("#lab", element).val()
-        };
-        $.ajax({
-            type: "POST",
-            url: generateHandlerUrl,
-            data: JSON.stringify(params),
-            success: jsCallback
-        });
-        $('.error-message', element).html();
+function CodeBrowserBlock(runtime, element) {
+  $(element).find('#generate_btn').bind('click', function() {
+    var handlerUrl = runtime.handlerUrl(element, 'generate');
+    var data = {
+      lab: $("#lab", element).val()
+    };
+    $.post(handlerUrl, JSON.stringify(data)).done(function(response) {
+      window.location.reload(true);
     });
+  });
+  
+  $(element).find('#edit_btn').bind('click', function() {
+    var handlerUrl = runtime.handlerUrl(element, 'edit');
+    var data = {
+      src: $("#codeview", element).attr("src")
+    };
+    $.post(handlerUrl, JSON.stringify(data)).done(function(response) {
+    });
+  });
 }
