@@ -24,7 +24,7 @@ class CodeBrowserBlock(XBlock):
         """
         student_id = self.runtime.anonymous_student_id
 	if student_id == "student":
-	    log_text = open('/var/www/gitlab_codebrowser.log').read( )
+	    log_text = open('/var/www/gitlab_codebrowser.log').read()
             context_dict = {
                 "log": log_text
             }
