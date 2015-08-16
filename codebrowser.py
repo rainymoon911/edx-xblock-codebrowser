@@ -58,9 +58,9 @@ class CodeBrowserBlock(XBlock):
         """
         rsa_file = '/var/www/.ssh/id_rsa_' + student_id
         if self.lab == "no_lab":
-            src = 'http://166.111.68.45:11133/static/codebrowser/notice.html'
+            self.src = 'http://166.111.68.45:11133/static/codebrowser/notice.html'
 	else:
-	    src = 'http://166.111.68.45:11133/static/codebrowser/' + student_id + '/ucore_lab/' + self.lab + '/index.html'
+	    self.src = 'http://166.111.68.45:11133/static/codebrowser/' + student_id + '/ucore_lab/' + self.lab + '/index.html'
 	
 	"""
 	pull the code from gitlab and generate the static html files
