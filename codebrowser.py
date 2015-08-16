@@ -36,7 +36,7 @@ class CodeBrowserBlock(XBlock):
             frag.add_css(unicode(css_str))
 	
             frag.initialize_js('CodeBrowserBlock')
-            return fragment
+            return frag
             
 	real_user = self.runtime.get_real_user(student_id)
 	email = real_user.email
