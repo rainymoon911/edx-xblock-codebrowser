@@ -146,6 +146,7 @@ static/html/codebrowser_view.html : replace the iframe's src with your postion o
     
 
 uninstall:
+======
         sudo -u edxapp /edx/bin/pip.edxapp uninstall xblock-codebrowser
     
     
