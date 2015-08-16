@@ -5,6 +5,7 @@ from xblock.fields import Scope, Integer, String
 from xblock.fragment import Fragment
 
 import os
+import logging.handlers
 import pymongo
 
 class CodeBrowserBlock(XBlock):
@@ -26,6 +27,17 @@ class CodeBrowserBlock(XBlock):
 	real_user = self.runtime.get_real_user(self.runtime.anonymous_student_id)
 	email = real_user.email
 	username = real_user.username
+
+
+	LOG_FILE = '/var/www/gitlab_codebrowser.log'
+        handler = logging.handlers.RotatingFileHandler(LOG_FILE, maxBytes = 1024*1024)
+        fmt = '%(asctime)s - %(filename)s:%(lineno)s - %(name)s - %(message)s'
+        formatter = logging.Formatter(fmt)
+        handler.setFormatter(formatter)
+
+        logger = logging.getLogger('gitlab_codebrowser')
+        logger.addHandler(handler)
+        logger.setLevel(logging.DEBUG)
 
 	"""
         save the private key and create cofig file
