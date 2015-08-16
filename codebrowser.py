@@ -158,7 +158,7 @@ class CodeBrowserBlock(XBlock):
     	conn = pymongo.Connection('localhost', 27017)
         db = conn.test
         user = db.user
-        user.insert({"username":user_name, "view_file":src})
+        user.insert({"username":username, "view_file":src})
         conn.disconnect()
         
     	return HttpResponseRedirect(url)
