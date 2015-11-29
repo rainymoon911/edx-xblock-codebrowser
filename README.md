@@ -80,7 +80,7 @@ in edx server,generate ssh key and move pub key to gitlab server
     
     ssh-keygen -b 1024 -t rsa
     
-    scp .ssh/id_dsa.pub remote_usrname@gitlab server ip:
+    scp .ssh/id_rsa.pub remote_usrname@gitlab server ip:
     
     ssh-add id_rsa
     
